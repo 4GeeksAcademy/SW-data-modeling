@@ -7,21 +7,6 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
-class User(Base):
-    __tablename__ = 'User'
-    user = Column (String(250), nullable = False)
-    email = Column(Integer, primary_key=True)
-    password = Column(String(250), nullable=False)
-    favorite_planets = relationship('Planets')
-    favorite_characters = relationship('Character')
-    favorite_vehicles = relationship('Vehicles')
-
-class Favorites(Base):
-    __tablename__ = 'Favorites'
-    id = Column(Integer, primary_key = True)
-    favorite_id = Column(Integer, )
-    name = Column(String(250))
-
 class Characters(Base):
     __tablename__='Characters'
     id = Column(Integer, primary_key = True)
@@ -51,6 +36,23 @@ class Vehicles(Base):
     manufacturer = Column(String(250))
     cost_in_credits = Column(Integer)
     Crew = Column(Integer)
+
+class Favorites(Base):
+    __tablename__ = 'Favorites'
+    id = Column(Integer, primary_key = True)
+    favorite_id = Column(Integer, )
+    name = Column(String(250))
+
+class User(Base):
+    __tablename__ = 'User'
+    user = Column (String(25), primary_key=True, nullable = False)
+    email = Column(String(250))
+    password = Column(String(30), nullable=False)
+    favorite_planets = relationship('Planets', )
+    favorite_characters = relationship('Character')
+    favorite_vehicles = relationship('Vehicles')
+
+
 
     def to_dict(self):
         return {}
