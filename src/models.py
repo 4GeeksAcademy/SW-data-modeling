@@ -7,32 +7,36 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
-class Characters(Base):
-    __tablename__='Characters'
+class User(Base):
+    __tablename__ = 'User'
+    id = Column(Integer, primary_key=True)
+    user = Column (String(25), nullable = False)
+    email = Column(String(250), nullable=False)
+    password = Column(String(30), nullable=False)
+
+class Character(Base):
+    __tablename__='Character'
     id = Column(Integer, primary_key = True)
-    name = Column(String(250))
+    name = Column(String(250), nullable=False)
     eye_color = Column(String(250))
     height = Column(String(250))
     birth_year = Column(String(250))
     gender = Column(String(250))
 
 
-class Planets(Base):
-    __tablename__= 'Planets'
+class Planet(Base):
+    __tablename__= 'Planet'
     id = Column(Integer, primary_key = True)
-    name = Column(String(250))
+    name = Column(String(250), nullable=False)
     climate = Column(String(250))
     terrain = Column(String(250))
     population = Column(Integer)
     diameter = Column(Integer)
 
-
-
-class Vehicles(Base):
-    __tablename__ = "Vehicles"
+class Vehicle(Base):
+    __tablename__ = "Vehicle"
     id = Column(Integer, primary_key = True)
-    name = Column(String(250))
-    model = Column(String(250))
+    model = Column(String(250), nullable=False)
     manufacturer = Column(String(250))
     cost_in_credits = Column(Integer)
     Crew = Column(Integer)
@@ -40,19 +44,16 @@ class Vehicles(Base):
 class Favorites(Base):
     __tablename__ = 'Favorites'
     id = Column(Integer, primary_key = True)
-    favorite_id = Column(Integer, )
-    name = Column(String(250))
+    user_id = Column(Integer, ForeignKey('user.id'), primary_key=True)
+    character_id = Column(Integer, ForeignKey('character.id'), nullable=False, primary_key=True)
+    planet_id = Column(Integer, ForeignKey('planet.id'), nullable=False, primary_key=True)
+    vehicle_id = Column(Integer, ForeignKey('vehicle.id'), nullable=False, primary_key=True)
 
-class User(Base):
-    __tablename__ = 'User'
-    user = Column (String(25), primary_key=True, nullable = False)
-    email = Column(String(250))
-    password = Column(String(30), nullable=False)
-    favorite_planets = relationship('Planets', )
-    favorite_characters = relationship('Character')
-    favorite_vehicles = relationship('Vehicles')
-
-
+    # Relationships
+    User.Favorites = relationship("Favorite", back_populates="user")
+    Planet.Favorites = relationship("Favorite", back_populates="planet")
+    Character.Favorites = relationship("Favorite", back_populates="character")
+    Vehicle.Favorites = relationship("Favorite", back_populates="vehicle")
 
     def to_dict(self):
         return {}
